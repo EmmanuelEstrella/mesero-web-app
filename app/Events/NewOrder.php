@@ -37,7 +37,7 @@ class NewOrder implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel('orders-'. $this->order->id);
+        return new Channel('orders');
     }
 
     public function broadcastWith() {

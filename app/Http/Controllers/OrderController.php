@@ -22,7 +22,7 @@ class OrderController extends Controller
             $order->items()->save($item, ['quantity' => 1]);
         }
         event(new NewOrder($request['tableId'], $order));
-        return $order->toJson();
+        return Order::where('id', $order->id)->with('items')->first()->toJson();
     }
 
     public function items(Order $order) {

@@ -16,7 +16,7 @@
                 <div id="orders" class="card-body">
                     <!-- Input orders here. -->
                     {{-- Template Start --}}
-                    <div id="order-card-template" class="card d-none">
+                    <div id="order-card-template" class="card d-none mb-3">
                         <div class="card-header row no-gutters">
                             <div class="col-6">
                                    <b class="client">Order No. 1</b> 
@@ -27,11 +27,11 @@
                         </div>
                         <div class="card-body row">
                             <div class="col-12">
-                                <div class="items row">
+                                <ul class="items row">
                                     <li class="col-6">Elem 1</li>
                                     <li class="col-6 text-right">Elem 1</li>
                                     <li class="col-6">Elem 1</li>
-                                </div>
+                                </ul>
                             </div>
                             <div class="col-12 no-gutters text-right">
                                 <hr>
