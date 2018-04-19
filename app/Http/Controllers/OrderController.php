@@ -15,11 +15,12 @@ class OrderController extends Controller
     }
 
     public function store(Request $request) {
+    
         $request['client'] = "Mesa No. " . $request['tableId']; 
         $order = Order::create($request->all());
-        foreach($request['items'] as $itemName) {
-            $item = Item::where('name','=', $itemName)->firstOrFail();
-            $order->items()->save($item, ['quantity' => 1]);
+        foreach($request['items'] as $receiveditem) {
+            $item = Item::where('name','=', $receiveditem['name'])->firstOrFail();
+            $order->items()->save($item, ['quantity' => $receiveditem['quantity'] ] );
         }
         event(new NewOrder($request['tableId'], $order));
         return Order::where('id', $order->id)->with('items')->first()->toJson();
