@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Robot;
 
 class HomeController extends Controller
 {
@@ -30,6 +31,7 @@ class HomeController extends Controller
     public function orders() 
     {
         Log::channel('daily')->debug("Entered ORDERS Page");
-        return view('orders');
+        
+        return view('orders.index', ['robots' => Robot::all()]);
     }
 }

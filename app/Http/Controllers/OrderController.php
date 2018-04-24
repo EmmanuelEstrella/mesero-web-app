@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Item;
 use App\Order;
+use App\Robot;
 use Carbon\Carbon;
 use App\Events\NewOrder;
+use App\Events\RobotUpdate;
 use GuzzleHttp\Client as GuzzleClient;
 class OrderController extends Controller
 {
@@ -24,7 +26,7 @@ class OrderController extends Controller
             $order->items()->save($item, ['quantity' => $receiveditem['quantity'] ] );
         }
         event(new NewOrder($request['tableId'], $order));
-        $this->sendNotification($order);
+        //$this->sendNotification($order);
         return Order::where('id', $order->id)->with('items')->first()->toJson();
     }
 
@@ -44,14 +46,24 @@ class OrderController extends Controller
             'data' => [
                 'order_id' => $order->id
             ],
-            'notification' => [
-                'title' => "Orden lista",
-                'body' => "Su orden esta lista"
-            ]
         ];
         $response = $client->request('POST','https://fcm.googleapis.com/fcm/send',[
             'json' => $messageData
         ]);
+
+
+    }
+
+    public function updateRobotStatus(Request $request){
+
+        $robot = Robot::updateOrCreate(['robot_id' => $request['robot_id']],[
+            'name' => $request['name'],
+            'status' => $request['status']
+        ]);
+
+        event( new RobotUpdate($robot));
+
+        return $robot;
 
 
     }

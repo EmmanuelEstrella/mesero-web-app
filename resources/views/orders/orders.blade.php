@@ -1,22 +1,17 @@
-@extends('layouts.app')
 
-@push('js')
-    <script src="{{ asset('vendor/js/jquery-3.3.1.min.js') }}" defer></script>
-    <script src="{{ asset('vendor/js/pusher-4.2.min.js') }}" defer></script>
-    <script src="{{ asset('vendor/js/echo.min.js') }}" defer></script>
-    <script src="{{ asset('js/socket.js') }}" defer></script>
-@endpush
 
-@section('content')
-<div class="container">
+<div class="">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Orders</div>
-                <div id="orders" class="card-body">
+        <div class="col-12" >
+                <div class="col-12 mt-4">
+                    <legend>Nuevas Órdenes</legend>
+                    <hr>
+                </div>
+               
+                <div id="orders-holder"  class="col-12">
                     <!-- Input orders here. -->
                     {{-- Template Start --}}
-                    <div id="order-card-template" class="card d-none mb-3">
+                    <div id="order-card-template" class="card d-none mt-3">
                         <div class="card-header row no-gutters">
                             <div class="col-6">
                                    <b class="client">Order No. 1</b> 
@@ -64,8 +59,7 @@
                     </div> 
                     {{-- Template End --}}
                 </div>
-            </div>
+          
         </div>
     </div>
 </div>
-@endsection

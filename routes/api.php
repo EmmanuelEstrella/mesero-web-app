@@ -20,6 +20,7 @@ Route::post('/orders', 'OrderController@store');
 Route::get('/orders', 'OrderController@index');
 Route::get('/orders/{order}/items', 'OrderController@items');
 Route::get('/items', 'ItemController@index');
+Route::post('/robotUpdate', 'OrderController@updateRobotStatus');
 
 Route::middleware('auth:api')->group(function() {
     // Route::get('/orders', 'OrderController@index');

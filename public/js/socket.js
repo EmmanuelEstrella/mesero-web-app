@@ -31,7 +31,7 @@ var socket = function () {
             var sub_total = result.sub_total;
             var total = result.total;
 
-            var $holder = $('#orders');
+            var $holder = $('#orders-holder');
             var $template = $('#order-card-template').clone();
             $template.find('.client').first().html(order.client);
             $template.find('.created_at').first().html(order.id);
@@ -53,6 +53,31 @@ var socket = function () {
             $holder.prepend($template);
             $template.fadeIn();
             $template.removeClass('d-none');
+        });
+
+
+        window.Echo.channel('orders').listen('RobotUpdate', function (json) {
+            console.log("Received Data");
+            console.log(json);
+            var result = json;
+            var robotId = result.robot_id;
+            var robotName = result.name;
+            var robotStatus = result.status;
+            var $existingRobot = $('#robot-' + robotId);
+            if( $existingRobot.length ){
+                $existingRobot.find('.robot-name').first().html(robotName);
+                $existingRobot.find('.robot-status').first().html(robotStatus);
+            }else{
+                var $holder = $('#robots-holder');
+                var $template = $('#robot-template').clone();
+                $template.find('.robot-name').first().html(robotName);
+                $template.find('.robot-status').first().html(robotStatus);
+                $template.attr('id', 'robot-'+robotId);
+                $holder.prepend($template);
+                $template.fadeIn();
+                $template.removeClass('d-none');
+            }
+           
         });
     }
 
