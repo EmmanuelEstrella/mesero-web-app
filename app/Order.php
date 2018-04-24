@@ -9,7 +9,8 @@ class Order extends Model
     protected $fillable = [
         'client',
         'delivered_at',
-        'token'
+        'token',
+        'table_id'
     ];
 
     public function items() {

@@ -20,6 +20,7 @@ class OrderController extends Controller
     public function store(Request $request) {
     
         $request['client'] = "Mesa No. " . $request['tableId']; 
+        $request['table_id'] = $request['tableId'];
         $order = Order::create($request->all());
         foreach($request['items'] as $receiveditem) {
             $item = Item::where('name','=', $receiveditem['name'])->firstOrFail();
@@ -66,5 +67,13 @@ class OrderController extends Controller
         return $robot;
 
 
+    }
+
+    public function sendOrders(Order $order)
+    {
+        $robot = Robot::where('status','LIKE','%disponible%')->firstOrFail();
+            
+        
+        
     }
 }
