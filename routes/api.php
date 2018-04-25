@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/orders', 'OrderController@store');
 Route::get('/orders', 'OrderController@index');
 Route::get('/orders/{order}/items', 'OrderController@items');
+Route::get('/orders/{order}/received', 'OrderController@orderReceived');
+Route::get('/orders/{order}/dismiss', 'OrderController@dismissRobot');
 Route::get('/items', 'ItemController@index');
 Route::post('/robot/update', 'OrderController@updateRobotStatus');
 

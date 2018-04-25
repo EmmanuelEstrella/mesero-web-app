@@ -21,7 +21,56 @@ var socket = function () {
     }
 
     getOrders();
+    var $lookingForModal = $('#lookingFor-modal');
+    var $lookingMessage = $lookingForModal.find('.looking-robot-msg');
+    var $lookingSuccessMessage = $lookingForModal.find('.looking-robot-success-msg');
+    var $lookingErrorMessage = $lookingForModal.find('.looking-robot-error-msg');
+    var $lookingCloseBtn = $lookingForModal.find('.modal-close-btn');
+  
 
+    var sendOrder = function( orderId)
+    {
+        console.log('order', orderId);
+        $lookingMessage.removeClass('d-none');
+        $lookingSuccessMessage.addClass('d-none');
+        $lookingErrorMessage.addClass('d-none');
+        $lookingCloseBtn.addClass('d-none');
+
+        $lookingForModal.modal({
+            keyboard: false,
+            backdrop: 'static'
+        });
+
+        $.ajax({
+            url: '/orders/' + orderId + '/send/',
+            method: 'GET',
+            success: function(data, textStatus, jqXHR){
+                $lookingMessage.addClass('d-none');
+
+                if(data.success){
+                    var robot = data.robot;
+                    var order = data.order;
+                    $lookingSuccessMessage.removeClass('d-none');
+                    $lookingSuccessMessage.find('.message-text').html(data.message);
+                }else{
+                    $lookingErrorMessage.removeClass('d-none');
+                    $lookingErrorMessage.find('.message-text').html(data.message);
+                   
+                }
+                $lookingCloseBtn.removeClass('d-none');
+               
+
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                $lookingMessage.addClass('d-none');
+                $lookingErrorMessage.find('.message-text').html("Ocurrio un error al enviar la orden. <br> Verifique la conexion con el servidor.")
+                $lookingErrorMessage.removeClass('d-none');
+                $lookingCloseBtn.removeClass('d-none');
+               
+            }
+        });
+    
+    }
     var listen = function() {
         window.Echo.channel('orders').listen('NewOrder', function(json) {
             console.log("Received Data");
@@ -38,6 +87,9 @@ var socket = function () {
             $template.find('.sub-total').first().html('$' + sub_total);
             $template.find('.tax').first().html('$' + (Math.round(sub_total * 28) / 100));
             $template.find('.total').first().html('$' + total);
+            $template.find('.order-send-btn').first().on('click', function(e){
+                sendOrder(order.id);
+            });
             var totalItems = order.items.length;
 
             var $itemDiv = $template.find('.items').first();

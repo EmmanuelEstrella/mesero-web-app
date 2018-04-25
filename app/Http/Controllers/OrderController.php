@@ -10,6 +10,7 @@ use App\Robot;
 use Carbon\Carbon;
 use App\Events\NewOrder;
 use App\Events\RobotUpdate;
+use App\Events\RobotCommand;
 use GuzzleHttp\Client as GuzzleClient;
 class OrderController extends Controller
 {
@@ -35,7 +36,7 @@ class OrderController extends Controller
         return response()->json($order->items);
     }
 
-    public function sendNotification(Order $order){
+    public function sendNotification(Order $order, Robot $robot){
         $client = new GuzzleClient ([
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -45,7 +46,8 @@ class OrderController extends Controller
         $messageData =[
             'to' => $order->token,
             'data' => [
-                'order_id' => $order->id
+                'order_id' => $order->id,
+                'robot_id' => $robot->robot_id
             ],
         ];
         $response = $client->request('POST','https://fcm.googleapis.com/fcm/send',[
@@ -69,10 +71,44 @@ class OrderController extends Controller
 
     }
 
+    public function orderReceived(Request $request, Order $order)
+    {
+        $robotId = $request['robot_id'];
+        $robot = Robot::where('robot_id','LIKE', "%$robotId%")->first();
+        
+        //TODO: Remove this event, the clients are the ones supposed to dismmiss a robot. 
+        event(new RobotCommand($robot, 5));
+        $this->sendNotification($order);
+    }
+
+    public function dismissRobot(Request $request, Order $order){
+        $robotId = $request['robot_id'];
+        $robot = Robot::where('robot_id','LIKE', "%$robotId%")->first();
+        event(new RobotCommand($robot, 5));
+    }
+
     public function sendOrders(Order $order)
     {
-        $robot = Robot::where('status','LIKE','%disponible%')->firstOrFail();
-            
+        $robot = Robot::where('status','LIKE','%DISPONIBLE%')->first();
+        
+        if(isset($robot)){
+
+            event(new RobotCommand($robot, $order->table_id));
+            $data = [
+                'success' => true, 
+                'robot' => $robot,
+                'order' => $order,
+                'message' =>  'La orden '.$order->id.' será entregada por el mesero <b>'.$robot->name.'</b>'
+            ];
+
+            return $data;
+
+        }
+        $data = [
+            'success' => false, 
+            'message' =>  'Ocurrio un error al enviar la orden. <br> Verifique que hayan meseros disponibles.'];
+
+        return $data;
         
         
     }

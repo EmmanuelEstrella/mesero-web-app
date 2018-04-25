@@ -54,6 +54,12 @@
                                         <b class="total">$0.00</b>
                                     </div>
                                 </div>
+                                <div class="row mt-4">
+                                    
+                                    <div class="offset-md-9 col-md-3">
+                                        <button class="btn btn-block btn-info order-send-btn">Enviar Orden</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div> 

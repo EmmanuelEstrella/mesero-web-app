@@ -12,7 +12,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('vendor/js/bootstrap.min.js') }}" defer></script>
+   
     @stack('js')
 
     <!-- Fonts -->
@@ -23,6 +23,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/css/fontawesome-all.min.css') }}" rel="stylesheet">
     @stack('css')
 </head>
 <body>
