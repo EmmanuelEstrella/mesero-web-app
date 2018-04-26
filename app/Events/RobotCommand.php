@@ -18,16 +18,18 @@ class RobotCommand implements ShouldBroadcastNow
 
     public $robot;
     public $beaconId;
+    public $orderId;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct( Robot $robot, $beaconId)
+    public function __construct( Robot $robot, $beaconId, $orderId)
     {
         $this->robot = $robot;
         $this->beaconId = $beaconId;
+        $this->orderId = $orderId;
     }
 
     /**
@@ -42,7 +44,8 @@ class RobotCommand implements ShouldBroadcastNow
 
     public function broadcastWith() {
         return [
-            'beacon_id' => $this->beaconId
+            'beacon_id' => $this->beaconId,
+            'order_id' => $this->orderId,
             
         ];
     }

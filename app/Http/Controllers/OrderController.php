@@ -93,7 +93,7 @@ class OrderController extends Controller
         
         if(isset($robot)){
 
-            event(new RobotCommand($robot, $order->table_id));
+            event(new RobotCommand($robot, $order->table_id, $order->id));
             $data = [
                 'success' => true, 
                 'robot' => $robot,
