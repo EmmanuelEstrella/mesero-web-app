@@ -52,6 +52,7 @@ var socket = function () {
                     var order = data.order;
                     $lookingSuccessMessage.removeClass('d-none');
                     $lookingSuccessMessage.find('.message-text').html(data.message);
+                    moveOrder(order.id);
                 }else{
                     $lookingErrorMessage.removeClass('d-none');
                     $lookingErrorMessage.find('.message-text').html(data.message);
@@ -71,6 +72,27 @@ var socket = function () {
         });
     
     }
+
+    var moveOrder = function(orderId){
+        var $sentOrdersHolder = $('#sent-orders-holder')
+        var $originalOrderElement = $('#order-' + orderId);
+        var $orderElement = $originalOrderElement.clone();
+        $orderElement.find('.status').html('SENT');
+        $orderElement.find('.order-send-btn').addClass('d-none');
+        $originalOrderElement.fadeOut({
+            complete: function(){
+                $originalOrderElement.remove();
+                $sentOrdersHolder.prepend($orderElement);
+            }
+        });
+
+    }
+
+    $('.order-send-btn').on('click', function(e){
+
+        sendOrder($(this).data('order-id'));
+    });
+
     var listen = function() {
         window.Echo.channel('orders').listen('NewOrder', function(json) {
             console.log("Received Data");
@@ -82,11 +104,13 @@ var socket = function () {
 
             var $holder = $('#orders-holder');
             var $template = $('#order-card-template').clone();
+            $template.attr('id', 'order-'+order.id);
             $template.find('.client').first().html(order.client);
             $template.find('.created_at').first().html(order.id);
             $template.find('.sub-total').first().html('$' + sub_total);
             $template.find('.tax').first().html('$' + (Math.round(sub_total * 28) / 100));
             $template.find('.total').first().html('$' + total);
+            $template.find('.status').first().html(order.status);
             $template.find('.order-send-btn').first().on('click', function(e){
                 sendOrder(order.id);
             });

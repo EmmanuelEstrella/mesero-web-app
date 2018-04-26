@@ -46,8 +46,8 @@ class OrderController extends Controller
         $messageData =[
             'to' => $order->token,
             'data' => [
-                'order' => $order,
-                'robot' => $robot
+                'order' => $order->id,
+                'robot' => $robot->robot_id
             ],
         ];
         $response = $client->request('POST','https://fcm.googleapis.com/fcm/send',[
@@ -100,6 +100,7 @@ class OrderController extends Controller
                 'order' => $order,
                 'message' =>  'La orden '.$order->id.' será entregada por el mesero <b>'.$robot->name.'</b>'
             ];
+            $order->update(['status' => 'SENT']);
 
             return $data;
 

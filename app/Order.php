@@ -10,7 +10,14 @@ class Order extends Model
         'client',
         'delivered_at',
         'token',
-        'table_id'
+        'table_id',
+        'status',
+        'waiter_robot_id'
+    ];
+
+    protected $append = [
+        'sub_total', 
+        'total'
     ];
 
     public function items() {
@@ -27,5 +34,13 @@ class Order extends Model
 
     public function getTotalAttribute() {
         return round($this->sub_total * 1.28, 2);
+    }
+
+    public function getTaxesAttribute() {
+        return round(($this->sub_total * 28) / 100, 2);
+    }
+
+    public function waiter(){
+        return $this->belongsTo('App\Robot', 'waiter_robot_id');
     }
 }

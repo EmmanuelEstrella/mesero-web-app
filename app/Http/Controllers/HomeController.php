@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Robot;
+use App\Order;
 
 class HomeController extends Controller
 {
@@ -32,6 +33,10 @@ class HomeController extends Controller
     {
         Log::channel('daily')->debug("Entered ORDERS Page");
         
-        return view('orders.index', ['robots' => Robot::all()]);
+        return view('orders.index', [
+            'robots' => Robot::all(), 
+            'sentOrders' => Order::where('status', 'SENT')->get(),
+            'newOrders' => Order::where('status', 'NEW')->orderBy('created_at', 'DES')->get(),
+        ]);
     }
 }

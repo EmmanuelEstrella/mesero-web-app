@@ -20,11 +20,15 @@
                             <a class="nav-link active" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Nuevas Órdenes</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" id="sent-orders-tab" data-toggle="tab" href="#sent-orders" role="tab" aria-controls="orders" aria-selected="true">Órdenes Enviadas</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" id="robots-tab" data-toggle="tab" href="#robots" role="tab" aria-controls="robots" aria-selected="false">Robots</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="orders" role="tabpanel" aria-labelledby="orders-tab">@include('orders.orders')</div>
+                        <div class="tab-pane fade " id="sent-orders" role="tabpanel" aria-labelledby="sent-orders-tab">@include('orders.sent-orders')</div>
                         <div class="tab-pane fade" id="robots" role="tabpanel" aria-labelledby="robots-tab">@include('orders.robots')</div>
                       
                     </div>       
