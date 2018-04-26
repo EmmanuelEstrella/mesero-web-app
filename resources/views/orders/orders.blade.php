@@ -81,7 +81,7 @@
                                 <div class="col-12">
                                     <ul class="items row">
                                         @for ($i = 0; $i < count($order->items); $i++)                                         
-                                            <li class="col-6 {{ $i%2 != 0 ? text-right : ''}}">
+                                            <li class="col-6 {{ $i%2 != 0 ? 'text-right' : ''}}">
                                                 <b class="item-name">{{$order->items[$i]->name}}</b> - Cnt: {{$order->items[$i]->pivot->quantity}} 
                                             </li>               
                                         @endfor                                   
