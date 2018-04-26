@@ -46,8 +46,8 @@ class OrderController extends Controller
         $messageData =[
             'to' => $order->token,
             'data' => [
-                'order' => $order->id,
-                'robot' => $robot->robot_id
+                'order_id' => $order->id,
+                'robot_id' => $robot->robot_id
             ],
         ];
         $response = $client->request('POST','https://fcm.googleapis.com/fcm/send',[
@@ -77,14 +77,14 @@ class OrderController extends Controller
         $robot = Robot::where('robot_id','LIKE', "%$robotId%")->first();
 
         //TODO: Remove this event, the clients are the ones supposed to dismmiss a robot. 
-        event(new RobotCommand($robot, 5));
+        // event(new RobotCommand($robot, 5));
         $this->sendNotification($order);
     }
 
     public function dismissRobot(Request $request, Order $order){
         $robotId = $request['robot_id'];
         $robot = Robot::where('robot_id','LIKE', "%$robotId%")->first();
-        event(new RobotCommand($robot, 5));
+        event(new RobotCommand($robot, 5, 0));
     }
 
     public function sendOrders(Order $order)

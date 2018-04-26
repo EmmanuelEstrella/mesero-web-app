@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return redirect()->action('HomeController@orders');
     }
 
     public function orders() 
@@ -35,8 +35,8 @@ class HomeController extends Controller
         
         return view('orders.index', [
             'robots' => Robot::all(), 
-            'sentOrders' => Order::where('status', 'SENT')->get(),
-            'newOrders' => Order::where('status', 'NEW')->orderBy('created_at', 'DES')->get(),
+            'sentOrders' => Order::where('status', 'SENT')->orderBy('id', 'DESC')->get(),
+            'newOrders' => Order::where('status', 'NEW')->orderBy('id', 'DESC')->get(),
         ]);
     }
 }

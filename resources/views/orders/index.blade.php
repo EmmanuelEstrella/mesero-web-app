@@ -2,11 +2,10 @@
 
 @push('js')
     <script src="{{ asset('vendor/js/jquery-3.3.1.min.js') }}" defer></script>
+    <script src="{{ asset('vendor/js/bootstrap.min.js') }}" defer></script>
     <script src="{{ asset('vendor/js/pusher-4.2.min.js') }}" defer></script>
     <script src="{{ asset('vendor/js/echo.min.js') }}" defer></script>
-    <script src="{{ asset('vendor/js/bootstrap.min.js') }}" defer></script>
     <script src="{{ asset('js/socket.js') }}" defer></script>
-    
 @endpush
 
 @section('content')
