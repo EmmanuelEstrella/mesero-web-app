@@ -5,6 +5,7 @@
     <script src="{{ asset('vendor/js/bootstrap.min.js') }}" defer></script>
     <script src="{{ asset('vendor/js/pusher-4.2.min.js') }}" defer></script>
     <script src="{{ asset('vendor/js/echo.min.js') }}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js" defer></script>
     <script src="{{ asset('js/socket.js') }}" defer></script>
 @endpush
 

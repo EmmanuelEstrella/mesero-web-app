@@ -113,4 +113,8 @@ class OrderController extends Controller
         
         
     }
+
+    public function deleteOrder(Order $order){
+        $order->delete();
+    }
 }

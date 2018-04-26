@@ -33,7 +33,7 @@ class Order extends Model
     }
 
     public function getTotalAttribute() {
-        return round($this->sub_total * 1.28, 2);
+        return round($this->sub_total + $this->taxes, 2);
     }
 
     public function getTaxesAttribute() {

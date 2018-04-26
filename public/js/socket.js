@@ -20,7 +20,66 @@ var socket = function () {
         });
     }
 
-    getOrders();
+    //getOrders();
+
+    
+
+    /**
+     * 
+     * Order Deletion Related
+     * 
+     */
+    $('.order-delete-btn').on('click', function(e){
+        removeOrder($(this).data('order-id'));
+    });
+
+    var removeOrder = function(orderId){
+        bootbox.confirm({
+            title: "Borrar Orden",
+            message: "¿Está seguro de que quiere eliminar esta orden? Esta acción es irreversible.",
+            buttons: {
+                confirm: {
+                    label: 'Si',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            closeButton: false,
+            callback: function (result) {
+                if(result){
+                    removeOrderCall(orderId)
+                }
+                console.log('This was logged in the callback: ' + result);
+            }
+        });
+    }
+    var removeOrderCall = function(orderId){
+        var $orderToRemove = $('#order-'+orderId);
+        $.ajax({
+            url: '/orders/'+orderId+'/delete',
+            method: 'GET',
+            success: function (data, textStatus, jqXHR) {
+                $orderToRemove.fadeOut({
+                    complete: function () {
+                        $orderToRemove.remove();
+                        updateNoOrderMessages();
+                    }
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                
+            }
+        })
+    }
+  
+    /**
+     * 
+     * Order Sending Related
+     * 
+     */
     var $lookingForModal = $('#lookingFor-modal');
     var $lookingMessage = $lookingForModal.find('.looking-robot-msg');
     var $lookingSuccessMessage = $lookingForModal.find('.looking-robot-success-msg');
@@ -78,11 +137,15 @@ var socket = function () {
         var $originalOrderElement = $('#order-' + orderId);
         var $orderElement = $originalOrderElement.clone();
         $orderElement.find('.status').html('SENT');
-        $orderElement.find('.order-send-btn').addClass('d-none');
+        $orderElement.find('.order-delete-btn').on('click', function(){
+            removeOrder(orderId);
+        })
+        $orderElement.find('.order-send-btn').closest('div').addClass('d-none');
         $originalOrderElement.fadeOut({
             complete: function(){
                 $originalOrderElement.remove();
                 $sentOrdersHolder.prepend($orderElement);
+                updateNoOrderMessages();
             }
         });
 
@@ -92,6 +155,27 @@ var socket = function () {
 
         sendOrder($(this).data('order-id'));
     });
+
+    
+    var $noNewOrdersMessage = $('#no-new-order-message');
+    var $noSentOrdersMessage = $('#no-sent-order-message');
+    var updateNoOrderMessages = function() {
+        console.log($('#orders-holder').children().length);
+        console.log($('#sent-orders-holder').children().length);
+      
+        $('#orders-holder').children().length < 2 ?
+            $noNewOrdersMessage.removeClass('d-none') : $noNewOrdersMessage.addClass('d-none');
+        $('#sent-orders-holder').children().length < 1 ?
+            $noSentOrdersMessage.removeClass('d-none') : $noSentOrdersMessage.addClass('d-none');
+
+    }
+
+    updateNoOrderMessages();
+    /**
+     * 
+     * Order & Robot Listening Related
+     * 
+     */
 
     var listen = function() {
         window.Echo.channel('orders').listen('NewOrder', function(json) {
@@ -114,6 +198,9 @@ var socket = function () {
             $template.find('.order-send-btn').first().on('click', function(e){
                 sendOrder(order.id);
             });
+            $template.find('.order-delete-btn').first().on('click', function(e){
+                removeOrder(order.id);
+            });
             var totalItems = order.items.length;
 
             var $itemDiv = $template.find('.items').first();
@@ -129,6 +216,7 @@ var socket = function () {
             $holder.prepend($template);
             $template.fadeIn();
             $template.removeClass('d-none');
+            updateNoOrderMessages();
         });
 
 

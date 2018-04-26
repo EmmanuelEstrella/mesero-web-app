@@ -7,8 +7,13 @@
                     <legend>Nuevas Órdenes</legend>
                     <hr>
                 </div>
+                <div class="col-12 mt-4 " id="no-new-order-message">
+                   <h5 class="font-weight-light">No hay nuevas ordenes para mostrar.</h5>
+                </div>
                
                 <div id="orders-holder"  class="col-12">
+
+
                     <!-- Input orders here. -->
                     {{-- Template Start --}}
                     <div id="order-card-template" class="card d-none mt-3">
@@ -55,11 +60,16 @@
                                         <b class="total">$0.00</b>
                                     </div>
                                 </div>
-                                <div class="row mt-4">
-                                    
-                                    <div class="offset-md-9 col-md-3">
+                                <div class="row mt-4 d-flex justify-content-end">
+                                
+                                    <div class=" col-6 col-sm-3 ">
+                                        <button class="btn btn-block btn-danger order-delete-btn">Borrar Orden</button>
+                                    </div>
+                                    <div class="col-6 col-sm-3">
                                         <button class="btn btn-block btn-info order-send-btn">Enviar Orden</button>
                                     </div>
+                                
+                                
                                 </div>
                             </div>
                         </div>
@@ -110,14 +120,19 @@
                                             Total:
                                         </div>
                                         <div class="col-3 no-gutters">
-                                            <b class="total">${{$order->sub_total}}</b>
+                                            <b class="total">${{$order->total}}</b>
                                         </div>
                                     </div>
-                                    <div class="row mt-4">
+                                    <div class="row mt-4 d-flex justify-content-end">
                         
-                                        <div class="offset-md-9 col-md-3">
+                                        <div class=" col-6 col-sm-3 ">
+                                            <button class="btn btn-block btn-danger order-delete-btn" data-order-id="{{$order->id}}">Borrar Orden</button>
+                                        </div>
+                                        <div class="col-6 col-sm-3">
                                             <button class="btn btn-block btn-info order-send-btn" data-order-id="{{$order->id}}">Enviar Orden</button>
                                         </div>
+
+                                       
                                     </div>
                                 </div>
                             </div>
