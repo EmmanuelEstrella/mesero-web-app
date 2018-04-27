@@ -78,7 +78,8 @@ class OrderController extends Controller
 
         //TODO: Remove this event, the clients are the ones supposed to dismmiss a robot. 
         // event(new RobotCommand($robot, 5));
-        $this->sendNotification($order);
+        $this->sendNotification($order, $robot);
+        return 'notification-sent';
     }
 
     public function dismissRobot(Request $request, Order $order){
